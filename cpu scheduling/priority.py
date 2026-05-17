@@ -1,16 +1,5 @@
-"""
-priority.py
-Priority Scheduling — Two Modes
-  - Non-Preemptive : once a process starts, it runs to completion
-  - Preemptive     : a higher-priority (lower number) arrival can interrupt
-
-Priority convention: lower number = higher priority (1 is most important)
-
-Same structure as fcfs.py and sjf.py:
-  - User inputs number of processes
-  - Arrival, burst, and priority are all randomly generated
-  - Both modes run on the same data
-"""
+# 05/17/26
+# priority queue, preemptive and non-preemptive algorithms with random process generation
 
 import random
 
