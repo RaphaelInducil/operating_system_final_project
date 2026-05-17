@@ -42,6 +42,7 @@ def run_fcfs(processes: list[dict]) -> dict:
     sorted_procs = sorted(processes, key=lambda p: p["arrival_time"])
 
     schedule = []
+    gantt    = []
     current_time = 0
 
     for proc in sorted_procs:
@@ -50,6 +51,7 @@ def run_fcfs(processes: list[dict]) -> dict:
 
         # CPU idles if the next process hasn't arrived yet
         if current_time < arrival:
+            gantt.append({"pid": "IDLE", "start": current_time, "end": arrival})
             current_time = arrival
 
         start_time      = current_time
@@ -67,6 +69,7 @@ def run_fcfs(processes: list[dict]) -> dict:
             "turnaround_time":  turnaround_time,
         })
 
+        gantt.append({"pid": proc["pid"], "start": start_time, "end": finish_time})
         current_time = finish_time
 
     n = len(schedule)
@@ -75,6 +78,7 @@ def run_fcfs(processes: list[dict]) -> dict:
 
     return {
         "schedule":            schedule,
+        "gantt":               gantt,
         "avg_waiting_time":    avg_waiting,
         "avg_turnaround_time": avg_turnaround,
     }
@@ -91,6 +95,22 @@ def display_processes(processes: list[dict]):
     print("  " + "-" * 36)
     for p in processes:
         print(f"  {p['pid']:<8} {p['arrival_time']:>12}s {p['burst_time']:>11}s")
+
+
+def display_gantt(gantt: list[dict]):
+    """Prints a simple text Gantt chart."""
+    print("\n  Gantt Chart:")
+    bar   = "  |"
+    times = f"  {gantt[0]['start']}"
+
+    for seg in gantt:
+        width  = max((seg["end"] - seg["start"]) * 2, len(seg["pid"]) + 2)
+        label  = seg["pid"].center(width)
+        bar   += f" {label} |"
+        times += f"{str(seg['end']).rjust(width + 3)}"
+
+    print(bar)
+    print(times)
 
 
 def display_results(results: dict):
@@ -147,4 +167,5 @@ if __name__ == "__main__":
     display_processes(processes)
 
     results = run_fcfs(processes)
+    display_gantt(results["gantt"])
     display_results(results)
