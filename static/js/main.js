@@ -58,9 +58,9 @@ function showConfig() {
   cfgQueues.classList.add("hidden");
 
   // Show relevant fields
-  if (selectedAlgo === "sjf")      cfgSjfMode.classList.remove("hidden");
+  if (selectedAlgo === "sjf")       cfgSjfMode.classList.remove("hidden");
   if (selectedAlgo === "priority") cfgPriMode.classList.remove("hidden");
-  if (selectedAlgo === "rr")       cfgQuantum.classList.remove("hidden");
+  if (selectedAlgo === "rr")        cfgQuantum.classList.remove("hidden");
   if (selectedAlgo === "mlq" || selectedAlgo === "mfq") {
     cfgQueues.classList.remove("hidden");
     buildQueueRows(selectedAlgo === "mfq");
@@ -113,7 +113,7 @@ function buildQueueRows(isMFQ) {
     // Quantum input (shown only if RR selected)
     const quantumWrap = document.createElement("div");
     quantumWrap.className = "quantum-inline hidden";
-    quantumWrap.innerHTML = `quantum <input class="field-input" type="number" min="1" max="10" value="${queueConfigs[i].quantum || 2}" />`;
+    quantumWrap.innerHTML = `quantum <input class="field-input" type="number" min="1" max="10" value="${queueConfigs[i].quantum || 2}" />;`;
 
     if (queueConfigs[i].algorithm === "Round Robin") {
       quantumWrap.classList.remove("hidden");
@@ -154,18 +154,36 @@ function buildQueueRows(isMFQ) {
 runBtn.addEventListener("click", async () => {
   if (!selectedAlgo) return;
 
-  const n       = parseInt(document.getElementById("num-processes").value) || 4;
-  const quantum = parseInt(document.getElementById("quantum").value) || 2;
+  // Securely capture the input integers
+  let n = parseInt(document.getElementById("num-processes").value);
+  let quantum = parseInt(document.getElementById("quantum").value);
 
-  // Sync queue configs from DOM
+  // Sanitization Guards: Reset if inputs are blank, text strings, or zero
+  if (isNaN(n) || n < 1) {
+    n = 4;
+    document.getElementById("num-processes").value = 4;
+  }
+  
+  if (isNaN(quantum) || quantum < 1) {
+    quantum = 2;
+    document.getElementById("quantum").value = 2;
+  }
+
+  // Sync queue configs from DOM states
   syncQueueConfigs();
 
+  // Cleanse data to guarantee zero division errors never execute on Flask
+  const sanitizedQueueConfigs = queueConfigs.map(q => ({
+    algorithm: q.algorithm,
+    quantum: (q.algorithm === "Round Robin") ? (parseInt(q.quantum) || 2) : 1
+  }));
+
   const payload = {
-    algorithm:    selectedAlgo,
-    n:            n,
-    mode:         selectedMode,
-    quantum:      quantum,
-    queue_configs: queueConfigs,
+    algorithm:     selectedAlgo,
+    n:             n,
+    mode:          selectedMode,
+    quantum:       quantum,
+    queue_configs: sanitizedQueueConfigs,
   };
 
   runBtn.textContent = "RUNNING...";
