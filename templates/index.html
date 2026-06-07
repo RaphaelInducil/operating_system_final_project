@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CPU Scheduler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-bracket">[</span>
+        CPU<span class="logo-accent">SCHED</span>
+        <span class="logo-bracket">]</span>
+      </div>
+      <p class="header-sub">Process Scheduling Simulator</p>
+    </div>
+  </header>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- STEP 1: Algorithm Selection -->
+    <section class="step" id="step-select">
+      <div class="step-label">01 — SELECT ALGORITHM</div>
+      <div class="algo-grid">
+        <button class="algo-btn" data-algo="fcfs">
+          <span class="algo-code">FCFS</span>
+          <span class="algo-name">First Come First Serve</span>
+        </button>
+        <button class="algo-btn" data-algo="sjf">
+          <span class="algo-code">SJF</span>
+          <span class="algo-name">Shortest Job First</span>
+        </button>
+        <button class="algo-btn" data-algo="priority">
+          <span class="algo-code">PRI</span>
+          <span class="algo-name">Priority Scheduling</span>
+        </button>
+        <button class="algo-btn" data-algo="rr">
+          <span class="algo-code">RR</span>
+          <span class="algo-name">Round Robin</span>
+        </button>
+        <button class="algo-btn" data-algo="mlq">
+          <span class="algo-code">MLQ</span>
+          <span class="algo-name">Multilevel Queue</span>
+        </button>
+        <button class="algo-btn" data-algo="mfq">
+          <span class="algo-code">MFQ</span>
+          <span class="algo-name">Multilevel Feedback Queue</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP 2: Configuration (shown after algo selected) -->
+    <section class="step hidden" id="step-config">
+      <div class="step-label">02 — CONFIGURE</div>
+      <div class="config-box">
+
+        <div class="field-group">
+          <label class="field-label">Number of Processes</label>
+          <input class="field-input" type="number" id="num-processes" min="1" max="20" value="4" />
+        </div>
+
+        <!-- SJF mode -->
+        <div class="field-group hidden" id="cfg-sjf-mode">
+          <label class="field-label">SJF Mode</label>
+          <div class="toggle-group">
+            <button class="toggle-btn active" data-mode="non_preemptive">Non-Preemptive</button>
+            <button class="toggle-btn" data-mode="preemptive">Preemptive (SRTF)</button>
+          </div>
+        </div>
+
+        <!-- Priority mode -->
+        <div class="field-group hidden" id="cfg-priority-mode">
+          <label class="field-label">Priority Mode</label>
+          <div class="toggle-group">
+            <button class="toggle-btn active" data-mode="non_preemptive">Non-Preemptive</button>
+            <button class="toggle-btn" data-mode="preemptive">Preemptive</button>
+          </div>
+        </div>
+
+        <!-- Round Robin quantum -->
+        <div class="field-group hidden" id="cfg-quantum">
+          <label class="field-label">Time Quantum (seconds)</label>
+          <input class="field-input" type="number" id="quantum" min="1" max="10" value="2" />
+        </div>
+
+        <!-- MLQ / MFQ queue config -->
+        <div class="field-group hidden" id="cfg-queues">
+          <label class="field-label">Queue Algorithm Assignment</label>
+          <div class="queue-config" id="queue-config-rows"></div>
+        </div>
+
+        <button class="run-btn" id="run-btn">
+          <span>RUN SIMULATION</span>
+          <span class="run-arrow">→</span>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- STEP 3: Results -->
+    <section class="step hidden" id="step-results">
+      <div class="step-label">03 — RESULTS</div>
+
+      <!-- Generated processes -->
+      <div class="result-card">
+        <div class="card-title">Generated Processes</div>
+        <div class="table-wrap">
+          <table class="data-table" id="proc-table">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Gantt Chart -->
+      <div class="result-card">
+        <div class="card-title">Gantt Chart</div>
+        <div class="gantt-wrap">
+          <div class="gantt-bar" id="gantt-bar"></div>
+          <div class="gantt-times" id="gantt-times"></div>
+        </div>
+      </div>
+
+      <!-- Schedule results -->
+      <div class="result-card">
+        <div class="card-title">Schedule</div>
+        <div class="table-wrap">
+          <table class="data-table" id="result-table">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Averages -->
+      <div class="averages-row">
+        <div class="avg-card">
+          <div class="avg-label">Avg Waiting Time</div>
+          <div class="avg-value" id="avg-waiting">—</div>
+        </div>
+        <div class="avg-card">
+          <div class="avg-label">Avg Turnaround Time</div>
+          <div class="avg-value" id="avg-turnaround">—</div>
+        </div>
+      </div>
+
+      <button class="reset-btn" id="reset-btn">← START OVER</button>
+    </section>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
