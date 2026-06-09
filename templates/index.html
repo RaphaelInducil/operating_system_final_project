@@ -6,259 +6,107 @@
   <title>VALONINI — OS Final Project</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
   <style>
-    /* Isolated Dashboard CSS rules to prevent breaking your style.css metrics */
-    .dashboard-container {
-      display: block;
-      width: 100%;
-    }
-    
     /* ── NAV ── */
     nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.25rem 2.5rem;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      background: var(--bg);
-      z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 2.5rem; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: var(--bg); z-index: 10;
     }
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--text);
-    }
+    .nav-logo { font-family: var(--mono); font-size: 1rem; font-weight: 700; letter-spacing: 0.08em; color: var(--text); }
     .nav-logo span { color: var(--accent); }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-    }
-    .nav-links a {
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: color 0.15s;
-      cursor: pointer;
-    }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { font-size: 0.82rem; color: var(--text-dim); text-decoration: none; letter-spacing: 0.05em; transition: color 0.15s; cursor: pointer; }
     .nav-links a:hover { color: var(--text); }
 
     /* ── HERO ── */
-    .hero {
-      text-align: center;
-      padding: 5rem 2rem 3rem;
-      position: relative;
-    }
-    .hero-tag {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-    .hero-title {
-      font-family: var(--mono);
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: 0.05em;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-    }
+    .hero { text-align: center; padding: 5rem 2rem 3rem; }
+    .hero-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 1rem; }
+    .hero-title { font-family: var(--mono); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; color: var(--text); letter-spacing: 0.05em; line-height: 1.1; margin-bottom: 1rem; }
     .hero-title span { color: var(--accent); }
-    .hero-tagline {
-      font-size: 0.9rem;
-      color: var(--text-dim);
-      font-style: italic;
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.03em;
-    }
-    .hero-about {
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      max-width: 480px;
-      margin: 0 auto;
-      line-height: 1.7;
-    }
+    .hero-tagline { font-size: 0.9rem; color: var(--text-dim); font-style: italic; margin-bottom: 0.5rem; letter-spacing: 0.03em; }
+    .hero-about { font-size: 0.82rem; color: var(--text-dim); max-width: 480px; margin: 0 auto; line-height: 1.7; }
 
     /* ── DIVIDER ── */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 0 2.5rem;
-      margin: 1rem 0;
-    }
+    .divider { display: flex; align-items: center; gap: 1rem; padding: 0 2.5rem; margin: 1rem 0; }
     .divider-line { flex: 1; height: 1px; background: var(--border); }
-    .divider-label {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      color: var(--text-dim);
-      text-transform: uppercase;
-    }
+    .divider-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em; color: var(--text-dim); text-transform: uppercase; }
 
-    /* ── TOPICS CAROUSEL ── */
-    .topics-section {
-      padding: 1.5rem 2.5rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .topics-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-    }
+    /* ── TOPICS GRID ── */
+    .topics-section { padding: 1.5rem 2.5rem; max-width: 900px; margin: 0 auto; }
+    .topics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
     .topic-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem 1.25rem;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      position: relative;
-      overflow: hidden;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.5rem 1.25rem; cursor: pointer; display: flex; flex-direction: column;
+      gap: 0.6rem; position: relative; overflow: hidden;
       transition: border-color var(--transition), background var(--transition), transform var(--transition);
       text-decoration: none;
     }
     .topic-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.25s ease;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
     }
-    .topic-card:hover::before,
-    .topic-card.active::before { transform: scaleX(1); }
-    .topic-card:hover,
-    .topic-card.active {
-      border-color: var(--accent);
-      background: var(--bg3);
-      transform: translateY(-2px);
-    }
-    .topic-num {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      letter-spacing: 0.1em;
-    }
-    .topic-code {
-      font-family: var(--mono);
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-    }
-    .topic-name {
-      font-size: 0.8rem;
-      color: var(--text-mid);
-      line-height: 1.4;
-    }
-    .topic-arrow {
-      margin-top: auto;
-      font-size: 1rem;
-      color: var(--border);
-      transition: color 0.2s, transform 0.2s;
-    }
-    .topic-card:hover .topic-arrow,
-    .topic-card.active .topic-arrow {
-      color: var(--accent);
-      transform: translateX(4px);
-    }
+    .topic-card:hover::before, .topic-card.active::before { transform: scaleX(1); }
+    .topic-card:hover, .topic-card.active { border-color: var(--accent); background: var(--bg3); transform: translateY(-2px); }
+    .topic-card.locked { opacity: 0.45; cursor: not-allowed; }
+    .topic-card.locked:hover { border-color: var(--border); background: var(--bg2); transform: none; }
+    .topic-card.locked::before { display: none; }
+    .topic-num { font-family: var(--mono); font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.1em; }
+    .topic-code { font-family: var(--mono); font-size: 1.4rem; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; }
+    .topic-name { font-size: 0.8rem; color: var(--text-mid); line-height: 1.4; }
+    .topic-arrow { margin-top: auto; font-size: 1rem; color: var(--border); transition: color 0.2s, transform 0.2s; }
+    .topic-card:hover .topic-arrow, .topic-card.active .topic-arrow { color: var(--accent); transform: translateX(4px); }
 
     /* ── MEMBERS ── */
-    .members-section {
-      padding: 1.5rem 2.5rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .members-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-    }
+    .members-section { padding: 1.5rem 2.5rem; max-width: 900px; margin: 0 auto; }
+    .members-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
     .member-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.6rem;
-      text-align: center;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.25rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; text-align: center;
       transition: border-color var(--transition);
     }
     .member-card:hover { border-color: var(--accent); }
     .member-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: #1f2e00;
-      border: 1px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.05em;
+      width: 44px; height: 44px; border-radius: 50%; background: #1f2e00; border: 1px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--accent); letter-spacing: 0.05em;
     }
-    .member-name {
-      font-size: 0.78rem;
-      color: var(--text);
-      font-weight: 500;
-      line-height: 1.3;
-    }
-    .member-role {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      color: var(--text-dim);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
+    .member-name { font-size: 0.78rem; color: var(--text); font-weight: 500; line-height: 1.3; }
+    .member-role { font-family: var(--mono); font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; }
 
     /* ── ABOUT ── */
-    .about-section {
-      padding: 1.5rem 2.5rem;
-      max-width: 900px;
-      margin: 0 auto;
+    .about-section { padding: 1.5rem 2.5rem; max-width: 900px; margin: 0 auto; }
+    .about-box { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.25rem 1.5rem; }
+    .about-text { font-size: 0.85rem; color: var(--text-mid); line-height: 1.8; }
+
+    /* ── BACK BUTTON ── */
+    .back-btn-container { max-width: 900px; margin: 0 auto; padding: 2rem 2rem 0; }
+
+    /* ── STATUS BADGES (memory + virtual) ── */
+    .status-badge {
+      font-family: var(--mono); font-size: 0.68rem; font-weight: 700;
+      padding: 0.15rem 0.55rem; border-radius: 4px; letter-spacing: 0.05em;
     }
-    .about-box {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: 0 var(--radius) var(--radius) 0;
-      padding: 1.25rem 1.5rem;
-    }
-    .about-text {
-      font-size: 0.85rem;
-      color: var(--text-mid);
-      line-height: 1.8;
+    .status-alloc  { background: #1a2600; color: var(--accent);  border: 1px solid var(--accent); }
+    .status-reject { background: #2e0a00; color: #f18535;        border: 1px solid #f18535; }
+    .status-hit    { background: #002a30; color: var(--q2);      border: 1px solid var(--q2); }
+    .status-fault  { background: #2e0a00; color: #f18535;        border: 1px solid #f18535; }
+
+    /* ── REFERENCE STRING ── */
+    .ref-string-wrap { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .ref-page {
+      font-family: var(--mono); font-size: 0.85rem; font-weight: 700;
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; color: var(--accent);
     }
 
-    /* ── BACK BUTTON STYLE ── */
-    .back-btn-container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2rem 2rem 0;
-    }
+    /* ── STAT CARDS ROW (memory + virtual) ── */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+    .stats-row-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
 
-    /* ── FADE IN ANIMATIONS FOR HOMEPAGE LOBBY ── */
+    /* ── ANIMATIONS ── */
     .hero { animation: fadeIn 0.4s ease; }
     .topics-grid { animation: fadeIn 0.5s ease 0.1s both; }
     .members-grid { animation: fadeIn 0.5s ease 0.2s both; }
@@ -275,7 +123,10 @@
     </div>
   </nav>
 
-  <div id="lobby-view" class="dashboard-container" style="display: block;">
+  <!-- ════════════════════════════════════════
+       LOBBY VIEW
+  ════════════════════════════════════════ -->
+  <div id="lobby-view" style="display: block;">
     <section class="hero" id="hero">
       <div class="hero-tag">Operating Systems — Final Project</div>
       <div class="hero-title">VAL<span>ONINI</span></div>
@@ -291,25 +142,25 @@
 
     <section class="topics-section" id="topics">
       <div class="topics-grid">
-        <a class="topic-card active" data-url="/cpu">
+        <a class="topic-card" data-view="cpu-view">
           <div class="topic-num">01</div>
           <div class="topic-code">CPU</div>
           <div class="topic-name">CPU Scheduling</div>
           <div class="topic-arrow">→</div>
         </a>
-        <a class="topic-card" data-url="/memory">
+        <a class="topic-card" data-view="memory-view">
           <div class="topic-num">02</div>
           <div class="topic-code">MEM</div>
           <div class="topic-name">Memory Management</div>
           <div class="topic-arrow">→</div>
         </a>
-        <a class="topic-card" data-url="/disk">
+        <a class="topic-card locked" data-view="disk-view">
           <div class="topic-num">03</div>
           <div class="topic-code">DISK</div>
           <div class="topic-name">Disk Management</div>
-          <div class="topic-arrow">→</div>
+          <div class="topic-arrow">🔒</div>
         </a>
-        <a class="topic-card" data-url="/virtual">
+        <a class="topic-card" data-view="virtual-view">
           <div class="topic-num">04</div>
           <div class="topic-code">VIRT</div>
           <div class="topic-name">Virtual Memory</div>
@@ -362,51 +213,34 @@
     </section>
   </div>
 
+
+  <!-- ════════════════════════════════════════
+       CPU VIEW  (unchanged from your original)
+  ════════════════════════════════════════ -->
   <div id="cpu-view" style="display: none; width: 100%;">
     <div class="back-btn-container">
       <button class="reset-btn" onclick="showLobby()">← BACK TO DASHBOARD</button>
     </div>
-    
     <main class="main">
       <section class="step" id="step-select">
         <div class="step-label">01 — SELECT ALGORITHM</div>
         <div class="algo-grid">
-          <button class="algo-btn" data-algo="fcfs">
-            <span class="algo-code">FCFS</span>
-            <span class="algo-name">First Come First Serve</span>
-          </button>
-          <button class="algo-btn" data-algo="sjf">
-            <span class="algo-code">SJF</span>
-            <span class="algo-name">Shortest Job First</span>
-          </button>
-          <button class="algo-btn" data-algo="priority">
-            <span class="algo-code">PRI</span>
-            <span class="algo-name">Priority Scheduling</span>
-          </button>
-          <button class="algo-btn" data-algo="rr">
-            <span class="algo-code">RR</span>
-            <span class="algo-name">Round Robin</span>
-          </button>
-          <button class="algo-btn" data-algo="mlq">
-            <span class="algo-code">MLQ</span>
-            <span class="algo-name">Multilevel Queue</span>
-          </button>
-          <button class="algo-btn" data-algo="mfq">
-            <span class="algo-code">MFQ</span>
-            <span class="algo-name">Multilevel Feedback Queue</span>
-          </button>
+          <button class="algo-btn" data-algo="fcfs"><span class="algo-code">FCFS</span><span class="algo-name">First Come First Serve</span></button>
+          <button class="algo-btn" data-algo="sjf"><span class="algo-code">SJF</span><span class="algo-name">Shortest Job First</span></button>
+          <button class="algo-btn" data-algo="priority"><span class="algo-code">PRI</span><span class="algo-name">Priority Scheduling</span></button>
+          <button class="algo-btn" data-algo="rr"><span class="algo-code">RR</span><span class="algo-name">Round Robin</span></button>
+          <button class="algo-btn" data-algo="mlq"><span class="algo-code">MLQ</span><span class="algo-name">Multilevel Queue</span></button>
+          <button class="algo-btn" data-algo="mfq"><span class="algo-code">MFQ</span><span class="algo-name">Multilevel Feedback Queue</span></button>
         </div>
       </section>
 
       <section class="step hidden" id="step-config">
         <div class="step-label">02 — CONFIGURE</div>
         <div class="config-box">
-
           <div class="field-group">
             <label class="field-label">Number of Processes</label>
             <input class="field-input" type="number" id="num-processes" min="1" max="20" value="4" />
           </div>
-
           <div class="field-group hidden" id="cfg-sjf-mode">
             <label class="field-label">SJF Mode</label>
             <div class="toggle-group">
@@ -414,7 +248,6 @@
               <button class="toggle-btn" data-mode="preemptive">Preemptive (SRTF)</button>
             </div>
           </div>
-
           <div class="field-group hidden" id="cfg-priority-mode">
             <label class="field-label">Priority Mode</label>
             <div class="toggle-group">
@@ -422,38 +255,24 @@
               <button class="toggle-btn" data-mode="preemptive">Preemptive</button>
             </div>
           </div>
-
           <div class="field-group hidden" id="cfg-quantum">
             <label class="field-label">Time Quantum (seconds)</label>
             <input class="field-input" type="number" id="quantum" min="1" max="10" value="2" />
           </div>
-
           <div class="field-group hidden" id="cfg-queues">
             <label class="field-label">Queue Algorithm Assignment</label>
             <div class="queue-config" id="queue-config-rows"></div>
           </div>
-
-          <button class="run-btn" id="run-btn">
-            <span>RUN SIMULATION</span>
-            <span class="run-arrow">→</span>
-          </button>
-
+          <button class="run-btn" id="run-btn"><span>RUN SIMULATION</span><span class="run-arrow">→</span></button>
         </div>
       </section>
 
       <section class="step hidden" id="step-results">
         <div class="step-label">03 — RESULTS</div>
-
         <div class="result-card">
           <div class="card-title">Generated Processes</div>
-          <div class="table-wrap">
-            <table class="data-table" id="proc-table">
-              <thead></thead>
-              <tbody></tbody>
-            </table>
-          </div>
+          <div class="table-wrap"><table class="data-table" id="proc-table"><thead></thead><tbody></tbody></table></div>
         </div>
-
         <div class="result-card">
           <div class="card-title">Gantt Chart</div>
           <div class="gantt-wrap">
@@ -461,80 +280,244 @@
             <div class="gantt-times" id="gantt-times"></div>
           </div>
         </div>
-
         <div class="result-card">
           <div class="card-title">Schedule</div>
-          <div class="table-wrap">
-            <table class="data-table" id="result-table">
-              <thead></thead>
-              <tbody></tbody>
-            </table>
-          </div>
+          <div class="table-wrap"><table class="data-table" id="result-table"><thead></thead><tbody></tbody></table></div>
         </div>
-
         <div class="averages-row">
-          <div class="avg-card">
-            <div class="avg-label">Avg Waiting Time</div>
-            <div class="avg-value" id="avg-waiting">—</div>
-          </div>
-          <div class="avg-card">
-            <div class="avg-label">Avg Turnaround Time</div>
-            <div class="avg-value" id="avg-turnaround">—</div>
-          </div>
+          <div class="avg-card"><div class="avg-label">Avg Waiting Time</div><div class="avg-value" id="avg-waiting">—</div></div>
+          <div class="avg-card"><div class="avg-label">Avg Turnaround Time</div><div class="avg-value" id="avg-turnaround">—</div></div>
         </div>
-
         <button class="reset-btn" id="reset-btn">← START OVER</button>
       </section>
     </main>
   </div>
 
+
+  <!-- ════════════════════════════════════════
+       MEMORY MANAGEMENT VIEW
+  ════════════════════════════════════════ -->
+  <div id="memory-view" style="display: none; width: 100%;">
+    <div class="back-btn-container">
+      <button class="reset-btn" onclick="showLobby()">← BACK TO DASHBOARD</button>
+    </div>
+    <main class="main">
+
+      <!-- 01 SELECT -->
+      <section class="step" id="mem-step-select">
+        <div class="step-label">01 — SELECT ALGORITHM</div>
+        <div class="algo-grid">
+          <button class="algo-btn mem-algo-btn" data-algo="First-Fit">
+            <span class="algo-code">FF</span>
+            <span class="algo-name">First-Fit</span>
+          </button>
+          <button class="algo-btn mem-algo-btn" data-algo="Best-Fit">
+            <span class="algo-code">BF</span>
+            <span class="algo-name">Best-Fit</span>
+          </button>
+          <button class="algo-btn mem-algo-btn" data-algo="Worst-Fit">
+            <span class="algo-code">WF</span>
+            <span class="algo-name">Worst-Fit</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 02 CONFIGURE -->
+      <section class="step hidden" id="mem-step-config">
+        <div class="step-label">02 — CONFIGURE</div>
+        <div class="config-box">
+          <div class="field-group">
+            <label class="field-label">Number of Processes</label>
+            <input class="field-input" type="number" id="mem-num-processes" min="1" max="30" value="10" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Compaction Mode</label>
+            <div class="toggle-group">
+              <button class="toggle-btn mem-toggle-btn active" data-mode="with_compaction">With Compaction</button>
+              <button class="toggle-btn mem-toggle-btn" data-mode="without_compaction">Without Compaction</button>
+            </div>
+          </div>
+          <button class="run-btn" id="mem-run-btn"><span>RUN SIMULATION</span><span class="run-arrow">→</span></button>
+        </div>
+      </section>
+
+      <!-- 03 RESULTS -->
+      <section class="step hidden" id="mem-step-results">
+        <div class="step-label">03 — RESULTS</div>
+
+        <div class="result-card">
+          <div class="card-title">Generated Processes</div>
+          <div class="table-wrap">
+            <table class="data-table" id="mem-proc-table"><thead></thead><tbody></tbody></table>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="card-title">Memory Usage (Final State)</div>
+          <div id="mem-bar-wrap" style="padding: 0.25rem 0;"></div>
+        </div>
+
+        <div class="result-card">
+          <div class="card-title">Allocation History</div>
+          <div class="table-wrap">
+            <table class="data-table" id="mem-history-table"><thead></thead><tbody></tbody></table>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="avg-card">
+            <div class="avg-label">Allocated</div>
+            <div class="avg-value" id="mem-allocated-count">—</div>
+          </div>
+          <div class="avg-card">
+            <div class="avg-label">Rejected</div>
+            <div class="avg-value" id="mem-rejected-count" style="color: #f18535;">—</div>
+          </div>
+          <div class="avg-card">
+            <div class="avg-label">Allocation Rate</div>
+            <div class="avg-value" id="mem-alloc-rate">—</div>
+          </div>
+        </div>
+
+        <button class="reset-btn" id="mem-reset-btn">← START OVER</button>
+      </section>
+
+    </main>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       VIRTUAL MEMORY VIEW
+  ════════════════════════════════════════ -->
+  <div id="virtual-view" style="display: none; width: 100%;">
+    <div class="back-btn-container">
+      <button class="reset-btn" onclick="showLobby()">← BACK TO DASHBOARD</button>
+    </div>
+    <main class="main">
+
+      <!-- 01 SELECT -->
+      <section class="step" id="virt-step-select">
+        <div class="step-label">01 — SELECT ALGORITHM</div>
+        <div class="algo-grid">
+          <button class="algo-btn virt-algo-btn" data-algo="FIFO">
+            <span class="algo-code">FIFO</span>
+            <span class="algo-name">First-In First-Out</span>
+          </button>
+          <button class="algo-btn virt-algo-btn" data-algo="LRU">
+            <span class="algo-code">LRU</span>
+            <span class="algo-name">Least Recently Used</span>
+          </button>
+          <button class="algo-btn virt-algo-btn" data-algo="Optimal">
+            <span class="algo-code">OPT</span>
+            <span class="algo-name">Optimal</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 02 CONFIGURE -->
+      <section class="step hidden" id="virt-step-config">
+        <div class="step-label">02 — CONFIGURE</div>
+        <div class="config-box">
+          <div class="field-group">
+            <label class="field-label">Reference String Length</label>
+            <input class="field-input" type="number" id="virt-ref-length" min="5" max="50" value="15" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Number of Frames</label>
+            <input class="field-input" type="number" id="virt-frame-count" min="1" max="10" value="3" />
+          </div>
+          <button class="run-btn" id="virt-run-btn"><span>RUN SIMULATION</span><span class="run-arrow">→</span></button>
+        </div>
+      </section>
+
+      <!-- 03 RESULTS -->
+      <section class="step hidden" id="virt-step-results">
+        <div class="step-label">03 — RESULTS</div>
+
+        <div class="result-card">
+          <div class="card-title">Reference String</div>
+          <div class="ref-string-wrap" id="virt-ref-string"></div>
+        </div>
+
+        <div class="result-card">
+          <div class="card-title">Frame Table</div>
+          <div class="table-wrap">
+            <table class="data-table" id="virt-frame-table"><thead></thead><tbody></tbody></table>
+          </div>
+        </div>
+
+        <div class="stats-row-4">
+          <div class="avg-card">
+            <div class="avg-label">Page Hits</div>
+            <div class="avg-value" id="virt-hits">—</div>
+          </div>
+          <div class="avg-card">
+            <div class="avg-label">Page Faults</div>
+            <div class="avg-value" id="virt-faults" style="color: #f18535;">—</div>
+          </div>
+          <div class="avg-card">
+            <div class="avg-label">Hit Rate</div>
+            <div class="avg-value" id="virt-hit-rate">—</div>
+          </div>
+          <div class="avg-card">
+            <div class="avg-label">Fault Rate</div>
+            <div class="avg-value" id="virt-fault-rate" style="color: #f18535;">—</div>
+          </div>
+        </div>
+
+        <button class="reset-btn" id="virt-reset-btn">← START OVER</button>
+      </section>
+
+    </main>
+  </div>
+
+
   <footer style="margin-top: auto; border-top: 1px solid var(--border); padding: 1rem 2.5rem; display: flex; justify-content: space-between; align-items: center;">
-    <div class="footer-copy" style="font-family: var(--mono); font-size: 0.65rem; color: var(--border); letter-spacing: 0.08em;">© 2026 VALONINI — All rights reserved</div>
-    <div class="footer-group" style="font-family: var(--mono); font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase;">OPERATING SYSTEMS — FINAL PROJECT</div>
+    <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--border); letter-spacing: 0.08em;">© 2026 VALONINI — All rights reserved</div>
+    <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase;">OPERATING SYSTEMS — FINAL PROJECT</div>
   </footer>
 
+
   <script>
-    const topicCards = document.querySelectorAll('.topic-card');
+    // ── ALL VIEWS ──
+    const ALL_VIEWS = ["lobby-view", "cpu-view", "memory-view", "disk-view", "virtual-view"];
 
-    topicCards.forEach(card => {
-      card.addEventListener('click', e => {
+    function showView(id) {
+      ALL_VIEWS.forEach(v => {
+        const el = document.getElementById(v);
+        if (el) el.style.display = "none";
+      });
+      const target = document.getElementById(id);
+      if (target) target.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showLobby() { showView("lobby-view"); }
+
+    // ── TOPIC CARDS ──
+    document.querySelectorAll(".topic-card").forEach(card => {
+      card.addEventListener("click", e => {
         e.preventDefault();
-        
-        const targetTopic = card.dataset.url;
-
-        if (targetTopic === '/cpu') {
-          topicCards.forEach(c => c.classList.remove('active'));
-          card.classList.add('active');
-
-          // Explicit target block switching guarantees layout separation
-          document.getElementById('lobby-view').style.display = 'none';
-          document.getElementById('cpu-view').style.display = 'block';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          alert('Topic "' + targetTopic + '" is currently locked. Group VALONINI is cooking CPU Scheduling first!');
-        }
+        if (card.classList.contains("locked")) return;
+        const targetView = card.dataset.view;
+        showView(targetView);
       });
     });
 
-    function showLobby() {
-      document.getElementById('cpu-view').style.display = 'none';
-      document.getElementById('lobby-view').style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
+    // ── NAV SCROLL ──
     function scrollToSection(id) {
-      const lobbyView = document.getElementById('lobby-view');
-      if (lobbyView.style.display === 'none') {
+      const lobby = document.getElementById("lobby-view");
+      if (lobby.style.display === "none") {
         showLobby();
-        setTimeout(() => {
-          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-        }, 50);
+        setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 50);
       } else {
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
       }
     }
   </script>
 
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/memory.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/virtual.js') }}"></script>
 </body>
 </html>
