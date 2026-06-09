@@ -1,3 +1,6 @@
+# 6/9/2026
+# Disk Management Simulation: Shortest Seek Time First (SSTF) Algorithm
+
 import random
 
 # ─────────────────────────────────────────────

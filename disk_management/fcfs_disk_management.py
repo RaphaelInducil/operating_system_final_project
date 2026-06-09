@@ -1,3 +1,6 @@
+# 6/9/2026
+# Disk Management Simulation: First-Come, First-Served (FCFS) Algorithm
+
 import random
 
 # ─────────────────────────────────────────────
