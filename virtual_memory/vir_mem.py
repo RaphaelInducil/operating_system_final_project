@@ -8,7 +8,7 @@ import random
 #  CONSTANTS
 # ─────────────────────────────────────────────
 
-ALGORITHMS = ["FIFO", "LRU", "Optimal"]
+ALGORITHMS = ["FIFO", "LRU", "Optimal", "LFU", "MFU"]
 
 
 # ─────────────────────────────────────────────
@@ -205,6 +205,115 @@ def run_optimal(reference_string: list[int], frame_count: int) -> dict:
         "fault_rate":   round((faults / total) * 100, 2),
     }
 
+# ─────────────────────────────────────────────
+#  LFU PAGE REPLACEMENT
+# ─────────────────────────────────────────────
+
+def run_lfu(reference_string: list[int], frame_count: int) -> dict:
+    """
+    Least Frequently Used Page Replacement.
+
+    Replaces the page with the lowest usage count.
+    """
+
+    frames = []
+    frequency = {}
+
+    history = []
+
+    hits = 0
+    faults = 0
+
+    for page in reference_string:
+
+        frequency[page] = frequency.get(page, 0) + 1
+
+        if page in frames:
+            hits += 1
+            status = "HIT"
+
+        else:
+            faults += 1
+            status = "FAULT"
+
+            if len(frames) < frame_count:
+                frames.append(page)
+
+            else:
+                lfu_page = min(frames, key=lambda p: frequency[p])
+                index = frames.index(lfu_page)
+                frames[index] = page
+
+        history.append({
+            "page": page,
+            "frames": frames.copy(),
+            "status": status,
+        })
+
+    total = hits + faults
+
+    return {
+        "history": history,
+        "hits": hits,
+        "faults": faults,
+        "hit_rate": round((hits / total) * 100, 2),
+        "fault_rate": round((faults / total) * 100, 2),
+    }
+
+# ─────────────────────────────────────────────
+#  MFU PAGE REPLACEMENT
+# ─────────────────────────────────────────────
+
+def run_mfu(reference_string: list[int], frame_count: int) -> dict:
+    """
+    Most Frequently Used Page Replacement.
+
+    Replaces the page with the highest usage count.
+    """
+
+    frames = []
+    frequency = {}
+
+    history = []
+
+    hits = 0
+    faults = 0
+
+    for page in reference_string:
+
+        frequency[page] = frequency.get(page, 0) + 1
+
+        if page in frames:
+            hits += 1
+            status = "HIT"
+
+        else:
+            faults += 1
+            status = "FAULT"
+
+            if len(frames) < frame_count:
+                frames.append(page)
+
+            else:
+                mfu_page = max(frames, key=lambda p: frequency[p])
+                index = frames.index(mfu_page)
+                frames[index] = page
+
+        history.append({
+            "page": page,
+            "frames": frames.copy(),
+            "status": status,
+        })
+
+    total = hits + faults
+
+    return {
+        "history": history,
+        "hits": hits,
+        "faults": faults,
+        "hit_rate": round((hits / total) * 100, 2),
+        "fault_rate": round((faults / total) * 100, 2),
+    }
 
 # ─────────────────────────────────────────────
 #  DISPLAY
@@ -325,9 +434,9 @@ if __name__ == "__main__":
     print("   VIRTUAL MEMORY MANAGEMENT")
     print("=" * 50)
 
-    length      = ask_reference_length()
+    length = ask_reference_length()
     frame_count = ask_frame_count()
-    algorithm   = ask_algorithm()
+    algorithm = ask_algorithm()
 
     reference_string = generate_reference_string(length)
 
@@ -341,8 +450,14 @@ if __name__ == "__main__":
     elif algorithm == "LRU":
         results = run_lru(reference_string, frame_count)
 
-    else:
+    elif algorithm == "Optimal":
         results = run_optimal(reference_string, frame_count)
+
+    elif algorithm == "LFU":
+        results = run_lfu(reference_string, frame_count)
+
+    elif algorithm == "MFU":
+        results = run_mfu(reference_string, frame_count)
 
     display_frames(results)
     display_results(results, algorithm)
