@@ -375,7 +375,6 @@
     </main>
   </div>
 
-
   <div id="disk-view" style="display: none; width: 100%;">
     <div class="back-btn-container">
       <button class="reset-btn" onclick="showLobby()">← BACK TO DASHBOARD</button>
@@ -443,6 +442,13 @@
           <div class="avg-card" style="margin: 1rem 0; border: 1px solid var(--border); padding: 1.5rem;">
             <div class="avg-value" id="disk-total-movement" style="color: var(--accent); font-size: 2rem;">—</div>
             <div class="avg-label" style="margin-top: 0.5rem;">Total Cylinders Traveled</div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="card-title">Head Movement Visualization</div>
+          <div style="background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; overflow-x: auto;">
+            <canvas id="disk-chart-canvas" width="800" height="400" style="width: 100%; min-width: 600px; display: block;"></canvas>
           </div>
         </div>
 

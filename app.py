@@ -255,6 +255,54 @@ def run_virtual():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# ─────────────────────────────────────────────
+#  DISK MANAGEMENT API
+# ─────────────────────────────────────────────
+
+@app.route("/api/disk", methods=["POST"])
+def run_disk():
+    body = request.get_json(silent=True)
+    if not body:
+        return jsonify({"error": "No data received"}), 400
+
+    algo = body.get("algorithm", "fcfs").lower()
+    initial_head = int(body.get("initial_head", 50))
+    requests_list = body.get("requests", [])
+
+    try:
+        # We import dynamically here so it doesn't crash the whole app if a file is missing
+        if algo == "fcfs":
+            from disk_management.fcfs import calculate_fcfs
+            results = calculate_fcfs(initial_head, requests_list)
+        elif algo == "sstf":
+            from disk_management.sstf import calculate_sstf
+            results = calculate_sstf(initial_head, requests_list)
+        elif algo == "scan":
+            from disk_management.scan import calculate_scan
+            results = calculate_scan(initial_head, requests_list)
+        elif algo == "c-scan":
+            from disk_management.c_scan import calculate_c_scan
+            results = calculate_c_scan(initial_head, requests_list)
+        elif algo == "look":
+            from disk_management.look import calculate_look
+            results = calculate_look(initial_head, requests_list)
+        elif algo == "c-look":
+            from disk_management.c_look import calculate_c_look
+            results = calculate_c_look(initial_head, requests_list)
+        else:
+            return jsonify({"error": f"Unknown algorithm: {algo}"}), 400
+
+        return jsonify({
+            "algorithm": algo,
+            "initial_head": initial_head,
+            "requests": requests_list,
+            "sequence": results["sequence"],
+            "total_movement": results["total_movement"],
+            "history": results["history"]
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

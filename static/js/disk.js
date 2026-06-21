@@ -53,9 +53,13 @@ diskRunBtn.addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+    
     const data = await res.json();
 
-    if (data.error) { alert("Error: " + data.error); return; }
+    if (data.error) { 
+      alert("Error: " + data.error); 
+      return; 
+    }
 
     renderDiskResults(data);
     diskStepResults.classList.remove("hidden");
@@ -91,7 +95,7 @@ function renderDiskResults(data) {
 
   // ── History table ──
   const dt = document.getElementById("disk-history-table");
-  dt.querySelector("thead").innerHTML = `<tr><th>Step</th><th>From</th><th>To</th><th>Distance</th></tr>`;
+  dt.querySelector("thead").innerHTML = `<tr><th>Step</th><th>From Track</th><th>To Track</th><th>Distance Moved</th></tr>`;
   dt.querySelector("tbody").innerHTML = data.history.map((h, i) => {
     return `<tr>
       <td class="pid-cell">${i + 1}</td>
@@ -102,5 +106,82 @@ function renderDiskResults(data) {
   }).join("");
 
   // ── Stats ──
-  document.getElementById("disk-total-movement").textContent = data.total_movement + " Cylinders";
+  document.getElementById("disk-total-movement").textContent = data.total_movement;
+  
+  // ── TRIGGERS THE CHART ──
+  drawDiskChart(data.sequence);
+}
+
+// ── CHART DRAWING LOGIC ──
+function drawDiskChart(sequence) {
+  const canvas = document.getElementById("disk-chart-canvas");
+  const ctx = canvas.getContext("2d");
+  
+  // Clear any previous chart
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Constants for drawing
+  const padding = 40;
+  const width = canvas.width - (padding * 2);
+  const height = canvas.height - (padding * 2);
+  const maxCylinder = 199; // Standard textbook max cylinder
+  
+  // Draw X-Axis (Cylinders 0 to 199)
+  ctx.beginPath();
+  ctx.moveTo(padding, padding);
+  ctx.lineTo(canvas.width - padding, padding);
+  ctx.strokeStyle = "#444"; // Dark gray axis line
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  
+  // Draw Axis Labels (0, 50, 100, 150, 199)
+  ctx.fillStyle = "#888";
+  ctx.font = "12px monospace";
+  ctx.textAlign = "center";
+  [0, 50, 100, 150, 199].forEach(tick => {
+    const x = padding + (tick / maxCylinder) * width;
+    ctx.fillText(tick, x, padding - 10);
+    // Draw tiny tick marks
+    ctx.beginPath();
+    ctx.moveTo(x, padding - 5);
+    ctx.lineTo(x, padding + 5);
+    ctx.stroke();
+  });
+
+  // Calculate coordinates for the sequence points
+  const stepHeight = height / (sequence.length - 1);
+  const points = sequence.map((track, index) => {
+    return {
+      x: padding + (track / maxCylinder) * width,
+      y: padding + (index * stepHeight) // Y goes down as steps increase
+    };
+  });
+
+  // Draw the connecting lines
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  for (let i = 1; i < points.length; i++) {
+    ctx.lineTo(points[i].x, points[i].y);
+  }
+  ctx.strokeStyle = "#b3ff00"; // VALONINI green/accent color!
+  ctx.lineWidth = 3;
+  ctx.lineJoin = "round";
+  ctx.stroke();
+
+  // Draw the dots at each track request
+  points.forEach((point, i) => {
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = "#b3ff00";
+    ctx.fill();
+    ctx.strokeStyle = "#111"; // Background color border
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    
+    // Write the track number next to the dot
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 11px monospace";
+    ctx.textAlign = "left";
+    ctx.fillText(sequence[i], point.x + 10, point.y + 4);
+  });
 }
