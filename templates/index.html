@@ -91,6 +91,7 @@
     }
     .status-alloc  { background: #1a2600; color: var(--accent);  border: 1px solid var(--accent); }
     .status-reject { background: #2e0a00; color: #f18535;        border: 1px solid #f18535; }
+    .status-free   { background: #111;    color: var(--text-dim);border: 1px solid var(--border); }
     .status-hit    { background: #002a30; color: var(--q2);      border: 1px solid var(--q2); }
     .status-fault  { background: #2e0a00; color: #f18535;        border: 1px solid #f18535; }
 
@@ -123,9 +124,6 @@
     </div>
   </nav>
 
-  <!-- ════════════════════════════════════════
-       LOBBY VIEW
-  ════════════════════════════════════════ -->
   <div id="lobby-view" style="display: block;">
     <section class="hero" id="hero">
       <div class="hero-tag">Operating Systems — Final Project</div>
@@ -189,7 +187,7 @@
         </div>
         <div class="member-card">
           <div class="member-avatar">RB</div>
-          <div class="member-name">Roswel Buñag</div>
+          <div class="member-name">Roswell Buñag</div>
           <div class="member-role">Member</div>
         </div>
         <div class="member-card">
@@ -214,9 +212,6 @@
   </div>
 
 
-  <!-- ════════════════════════════════════════
-       CPU VIEW  (unchanged from your original)
-  ════════════════════════════════════════ -->
   <div id="cpu-view" style="display: none; width: 100%;">
     <div class="back-btn-container">
       <button class="reset-btn" onclick="showLobby()">← BACK TO DASHBOARD</button>
@@ -294,16 +289,12 @@
   </div>
 
 
-  <!-- ════════════════════════════════════════
-       MEMORY MANAGEMENT VIEW
-  ════════════════════════════════════════ -->
   <div id="memory-view" style="display: none; width: 100%;">
     <div class="back-btn-container">
       <button class="reset-btn" onclick="showLobby()">← BACK TO DASHBOARD</button>
     </div>
     <main class="main">
 
-      <!-- 01 SELECT -->
       <section class="step" id="mem-step-select">
         <div class="step-label">01 — SELECT ALGORITHM</div>
         <div class="algo-grid">
@@ -322,31 +313,30 @@
         </div>
       </section>
 
-      <!-- 02 CONFIGURE -->
       <section class="step hidden" id="mem-step-config">
         <div class="step-label">02 — CONFIGURE</div>
         <div class="config-box">
           <div class="field-group">
-            <label class="field-label">Number of Processes</label>
+            <label class="field-label">Number of Processes / Events</label>
             <input class="field-input" type="number" id="mem-num-processes" min="1" max="30" value="10" />
           </div>
           <div class="field-group">
-            <label class="field-label">Compaction Mode</label>
-            <div class="toggle-group">
-              <button class="toggle-btn mem-toggle-btn active" data-mode="with_compaction">With Compaction</button>
-              <button class="toggle-btn mem-toggle-btn" data-mode="without_compaction">Without Compaction</button>
+            <label class="field-label">Partitioning Mode</label>
+            <div class="toggle-group" style="flex-wrap: wrap;">
+              <button class="toggle-btn mem-toggle-btn" data-mode="mft">MFT (Fixed)</button>
+              <button class="toggle-btn mem-toggle-btn active" data-mode="mvt_with_compaction">MVT (Compaction)</button>
+              <button class="toggle-btn mem-toggle-btn" data-mode="mvt_without_compaction">MVT (No Compaction)</button>
             </div>
           </div>
           <button class="run-btn" id="mem-run-btn"><span>RUN SIMULATION</span><span class="run-arrow">→</span></button>
         </div>
       </section>
 
-      <!-- 03 RESULTS -->
       <section class="step hidden" id="mem-step-results">
         <div class="step-label">03 — RESULTS</div>
 
         <div class="result-card">
-          <div class="card-title">Generated Processes</div>
+          <div class="card-title">Generated Processes / Events</div>
           <div class="table-wrap">
             <table class="data-table" id="mem-proc-table"><thead></thead><tbody></tbody></table>
           </div>
@@ -366,15 +356,15 @@
 
         <div class="stats-row">
           <div class="avg-card">
-            <div class="avg-label">Allocated</div>
+            <span class="avg-label" style="display: block;">Allocated</span>
             <div class="avg-value" id="mem-allocated-count">—</div>
           </div>
           <div class="avg-card">
-            <div class="avg-label">Rejected</div>
+            <span class="avg-label" style="display: block;">Rejected</span>
             <div class="avg-value" id="mem-rejected-count" style="color: #f18535;">—</div>
           </div>
           <div class="avg-card">
-            <div class="avg-label">Allocation Rate</div>
+            <span class="avg-label" style="display: block;">Allocation Rate</span>
             <div class="avg-value" id="mem-alloc-rate">—</div>
           </div>
         </div>
@@ -386,16 +376,12 @@
   </div>
 
 
-  <!-- ════════════════════════════════════════
-       VIRTUAL MEMORY VIEW
-  ════════════════════════════════════════ -->
   <div id="virtual-view" style="display: none; width: 100%;">
     <div class="back-btn-container">
       <button class="reset-btn" onclick="showLobby()">← BACK TO DASHBOARD</button>
     </div>
     <main class="main">
 
-      <!-- 01 SELECT -->
       <section class="step" id="virt-step-select">
         <div class="step-label">01 — SELECT ALGORITHM</div>
         <div class="algo-grid">
@@ -414,7 +400,6 @@
         </div>
       </section>
 
-      <!-- 02 CONFIGURE -->
       <section class="step hidden" id="virt-step-config">
         <div class="step-label">02 — CONFIGURE</div>
         <div class="config-box">
@@ -430,7 +415,6 @@
         </div>
       </section>
 
-      <!-- 03 RESULTS -->
       <section class="step hidden" id="virt-step-results">
         <div class="step-label">03 — RESULTS</div>
 

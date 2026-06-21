@@ -15,8 +15,8 @@ Folder structure expected:
   cpu_scheduling/
     fcfs.py  sjf.py  priority.py  round_robin.py  mlq.py  mfq.py
   memory_management/
-    mm_with_comp.py
-    mm_without_comp.py
+    mft_partitioning.py
+    mvt_partitioning.py
   virtual_memory/
     vir_mem.py
 """
@@ -32,8 +32,18 @@ from cpu_scheduling.mlq         import generate_processes as gen_mlq,         ru
 from cpu_scheduling.mlfq        import generate_processes as gen_mfq,         run_mfq
 
 # ── Memory Management ──
-from memory_management.mm_with_compaction    import generate_processes as gen_mem, run_simulation as run_mem_with
-from memory_management.mm_without_compaction import run_simulation as run_mem_without
+from memory_management.mft_partitioning import (
+    generate_process_sizes as gen_mft_processes, 
+    generate_fixed_partitions,
+    run_first_fit, 
+    run_best_fit, 
+    run_worst_fit
+)
+from memory_management.mvt_partitioning import (
+    generate_memory_events as gen_mvt_events,
+    run_without_compaction, 
+    run_with_compaction
+)
 
 # ── Virtual Memory ──
 from virtual_memory.vir_mem import generate_reference_string, run_fifo, run_lru, run_optimal
@@ -151,26 +161,56 @@ def run_memory():
     if not body:
         return jsonify({"error": "No data received"}), 400
 
-    algo       = body.get("algorithm", "First-Fit")   # First-Fit | Best-Fit | Worst-Fit
-    mode       = body.get("mode", "with_compaction")  # with_compaction | without_compaction
+    # Ensure frontend formats ("First-Fit") match python function expectations ("First Fit")
+    algo       = body.get("algorithm", "First-Fit").replace("-", " ")
+    mode       = body.get("mode", "mvt_with_compaction") 
     n          = max(1, min(int(body.get("n", 10)), 30))
+    
+    total_memory = int(body.get("total_memory", 1024))
+    partitions   = body.get("partitions", None)
 
     try:
-        processes = gen_mem(n)
+        # Route to the appropriate simulation based on the requested mode
+        if mode == "mft":
+            processes = gen_mft_processes(n)
+            
+            # Use provided partitions, or generate 5 random ones if none provided
+            parts = partitions if partitions else generate_fixed_partitions(5)
 
-        if mode == "with_compaction":
-            results = run_mem_with(processes, algo)
+            if algo == "First Fit":
+                results = run_first_fit(processes, parts)
+            elif algo == "Best Fit":
+                results = run_best_fit(processes, parts)
+            elif algo == "Worst Fit":
+                results = run_worst_fit(processes, parts)
+            else:
+                results = run_first_fit(processes, parts) # Fallback
+                
+            input_data = processes
+
         else:
-            results = run_mem_without(processes, algo)
+            # MVT generates an event stream (positive for alloc, negative for free)
+            events = gen_mvt_events(n)
 
+            if mode == "mvt_with_compaction":
+                results = run_with_compaction(events, total_memory)
+            else:
+                results = run_without_compaction(events, total_memory)
+                
+            input_data = events
+
+        # Safely package all data regardless of whether it's MFT or MVT
         return jsonify({
             "algorithm":       algo,
             "mode":            mode,
-            "processes":       processes,
-            "history":         results["history"],
-            "allocated":       results["allocated"],
-            "rejected":        results["rejected"],
-            "allocation_rate": results["allocation_rate"],
+            "processes":       input_data,  
+            "history":         results.get("history", []),
+            "allocated":       results.get("allocated", 0),
+            "unallocated":     results.get("unallocated", 0), # Exists only in MFT
+            "rejected":        results.get("rejected", 0),    # Exists only in MVT
+            "allocation_rate": results.get("alloc_rate", 0),
+            "total_frag":      results.get("total_frag", 0),  # Exists only in MFT
+            "ext_frag":        results.get("ext_frag", 0),    # Exists only in MVT
         })
 
     except Exception as e:
