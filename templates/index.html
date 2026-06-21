@@ -376,6 +376,99 @@
   </div>
 
 
+  <div id="disk-view" style="display: none; width: 100%;">
+    <div class="back-btn-container">
+      <button class="reset-btn" onclick="showLobby()">← BACK TO DASHBOARD</button>
+    </div>
+    <main class="main">
+
+      <section class="step" id="disk-step-select">
+        <div class="step-label">01 — SELECT ALGORITHM</div>
+        <div class="algo-grid">
+          <button class="algo-btn disk-algo-btn" data-algo="fcfs">
+            <span class="algo-code">FCFS</span>
+            <span class="algo-name">First Come First Serve</span>
+          </button>
+          <button class="algo-btn disk-algo-btn" data-algo="sstf">
+            <span class="algo-code">SSTF</span>
+            <span class="algo-name">Shortest Seek Time</span>
+          </button>
+          <button class="algo-btn disk-algo-btn" data-algo="scan">
+            <span class="algo-code">SCAN</span>
+            <span class="algo-name">Elevator Algorithm</span>
+          </button>
+          <button class="algo-btn disk-algo-btn" data-algo="c-scan">
+            <span class="algo-code">C-SCAN</span>
+            <span class="algo-name">Circular SCAN</span>
+          </button>
+          <button class="algo-btn disk-algo-btn" data-algo="look">
+            <span class="algo-code">LOOK</span>
+            <span class="algo-name">LOOK Algorithm</span>
+          </button>
+          <button class="algo-btn disk-algo-btn" data-algo="c-look">
+            <span class="algo-code">C-LOOK</span>
+            <span class="algo-name">Circular LOOK</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="step hidden" id="disk-step-config">
+        <div class="step-label">02 — CONFIGURE</div>
+        <div class="config-box">
+          <div class="field-group">
+            <label class="field-label">Initial Head Position (0-199)</label>
+            <input class="field-input" type="number" id="disk-initial-head" min="0" max="199" value="50" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Track Requests (comma separated)</label>
+            <input class="field-input" type="text" id="disk-track-requests" value="82, 170, 43, 140, 24, 16, 190" />
+          </div>
+          <button class="run-btn" id="disk-run-btn"><span>RUN SIMULATION</span><span class="run-arrow">→</span></button>
+        </div>
+      </section>
+
+      <section class="step hidden" id="disk-step-results">
+        <div class="step-label">03 — RESULTS</div>
+        
+        <div class="result-card">
+          <div class="card-title">Execution Sequence</div>
+          <div class="table-wrap">
+            <div class="ref-string-wrap" id="disk-sequence" style="padding: 1rem;">
+            </div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="card-title">Total Head Movement</div>
+          <div class="avg-card" style="margin: 1rem 0; border: 1px solid var(--border); padding: 1.5rem;">
+            <div class="avg-value" id="disk-total-movement" style="color: var(--accent); font-size: 2rem;">—</div>
+            <div class="avg-label" style="margin-top: 0.5rem;">Total Cylinders Traveled</div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div class="card-title">Movement History</div>
+          <div class="table-wrap">
+            <table class="data-table" id="disk-history-table">
+              <thead>
+                <tr>
+                  <th>Step</th>
+                  <th>From Track</th>
+                  <th>To Track</th>
+                  <th>Distance Moved</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <button class="reset-btn" id="disk-reset-btn">← START OVER</button>
+      </section>
+    </main>
+  </div>
+
+
   <div id="virtual-view" style="display: none; width: 100%;">
     <div class="back-btn-container">
       <button class="reset-btn" onclick="showLobby()">← BACK TO DASHBOARD</button>
@@ -461,16 +554,15 @@
     <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase;">OPERATING SYSTEMS — FINAL PROJECT</div>
   </footer>
 
-
   <script>
-    // ── ALL VIEWS ──
-    const ALL_VIEWS = ["lobby-view", "cpu-view", "memory-view", "disk-view", "virtual-view"];
-
+    // Safe View Switcher (Won't crash your other scripts)
     function showView(id) {
-      ALL_VIEWS.forEach(v => {
-        const el = document.getElementById(v);
-        if (el) el.style.display = "none";
-      });
+      document.getElementById('lobby-view').style.display = 'none';
+      document.getElementById('cpu-view').style.display = 'none';
+      document.getElementById('memory-view').style.display = 'none';
+      document.getElementById('disk-view').style.display = 'none';
+      document.getElementById('virtual-view').style.display = 'none';
+      
       const target = document.getElementById(id);
       if (target) target.style.display = "block";
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -478,17 +570,14 @@
 
     function showLobby() { showView("lobby-view"); }
 
-    // ── TOPIC CARDS ──
     document.querySelectorAll(".topic-card").forEach(card => {
       card.addEventListener("click", e => {
         e.preventDefault();
         if (card.classList.contains("locked")) return;
-        const targetView = card.dataset.view;
-        showView(targetView);
+        showView(card.dataset.view);
       });
     });
 
-    // ── NAV SCROLL ──
     function scrollToSection(id) {
       const lobby = document.getElementById("lobby-view");
       if (lobby.style.display === "none") {
@@ -503,5 +592,6 @@
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   <script src="{{ url_for('static', filename='js/memory.js') }}"></script>
   <script src="{{ url_for('static', filename='js/virtual.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/disk.js') }}"></script>
 </body>
 </html>
