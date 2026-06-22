@@ -46,8 +46,14 @@ from memory_management.mvt_partitioning import (
 )
 
 # ── Virtual Memory ──
-from virtual_memory.vir_mem import generate_reference_string, run_fifo, run_lru, run_optimal
-
+from virtual_memory.vir_mem import (
+    generate_reference_string,
+    run_fifo,
+    run_lru,
+    run_optimal,
+    run_lfu,
+    run_mfu
+)
 app = Flask(__name__)
 
 
@@ -238,8 +244,14 @@ def run_virtual():
             results = run_fifo(reference_string, frame_count)
         elif algo == "LRU":
             results = run_lru(reference_string, frame_count)
-        else:
+        elif algo == "Optimal":
             results = run_optimal(reference_string, frame_count)
+        elif algo == "LFU":
+            results = run_lfu(reference_string, frame_count)
+        elif algo == "MFU":
+            results = run_mfu(reference_string, frame_count)
+        else:
+            return jsonify({"error": "Invalid algorithm"}), 400
 
         return jsonify({
             "algorithm":        algo,
