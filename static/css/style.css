@@ -77,9 +77,9 @@
 
   /* ── ALGORITHM GRID ── */
   .algo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
   }
   .algo-btn {
     background: var(--bg2);
@@ -265,6 +265,72 @@
 
   /* ── DATA TABLE ── */
   .table-wrap { overflow-x: auto; }
+  .virt-visualizer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+  .virt-step-card {
+    background: linear-gradient(180deg, rgba(20, 20, 20, 0.97), rgba(8, 8, 8, 0.98));
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.8rem;
+  }
+  .virt-step-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    margin-bottom: 0.6rem;
+  }
+  .virt-step-page {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .virt-frame-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .virt-frame-box {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    background: #1b1f12;
+    border: 1px solid #3a4600;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .virt-frame-box.empty {
+    background: #121212;
+    border-style: dashed;
+    color: #555;
+  }
+  .virt-status {
+    margin-top: 0.55rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0;
+    border-radius: 999px;
+  }
+  .virt-status.hit {
+    background: rgba(74, 222, 128, 0.1);
+    color: #4ade80;
+  }
+  .virt-status.fault {
+    background: rgba(241, 133, 53, 0.1);
+    color: #f18535;
+  }
   .data-table {
     width: 100%;
     border-collapse: collapse;

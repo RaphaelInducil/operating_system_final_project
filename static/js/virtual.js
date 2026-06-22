@@ -99,9 +99,48 @@ function renderVirtualResults(data) {
     </tr>`;
   }).join("");
 
+  // ── Frame visualizer ──
+  drawVirtualVisualizer(data);
+
   // ── Stats ──
   document.getElementById("virt-hits").textContent      = data.hits;
   document.getElementById("virt-faults").textContent    = data.faults;
   document.getElementById("virt-hit-rate").textContent  = data.hit_rate + "%";
   document.getElementById("virt-fault-rate").textContent = data.fault_rate + "%";
+}
+
+function drawVirtualVisualizer(data) {
+  const container = document.getElementById("virt-visualizer");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  data.history.forEach((h, i) => {
+    const card = document.createElement("div");
+    card.className = "virt-step-card";
+
+    const head = document.createElement("div");
+    head.className = "virt-step-head";
+    head.innerHTML = `<span>STEP ${i + 1}</span><span class="virt-step-page">PAGE ${h.page}</span>`;
+
+    const frameRow = document.createElement("div");
+    frameRow.className = "virt-frame-row";
+
+    for (let f = 0; f < data.frame_count; f++) {
+      const box = document.createElement("div");
+      const value = h.frames[f];
+      box.className = `virt-frame-box${value === undefined ? " empty" : ""}`;
+      box.textContent = value === undefined ? "—" : value;
+      frameRow.appendChild(box);
+    }
+
+    const status = document.createElement("div");
+    status.className = `virt-status ${h.status.toLowerCase()}`;
+    status.textContent = h.status;
+
+    card.appendChild(head);
+    card.appendChild(frameRow);
+    card.appendChild(status);
+    container.appendChild(card);
+  });
 }
