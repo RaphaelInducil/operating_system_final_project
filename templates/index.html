@@ -66,7 +66,7 @@
       background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
       padding: 1.25rem 1rem; display: block; position: relative; text-decoration: none;
       color: inherit; cursor: pointer; overflow: hidden; transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
-      min-height: 170px;
+      min-height: 170px; box-sizing: border-box;
     }
     .member-card:hover, .member-card:focus-visible {
       border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(200, 241, 53, 0.08);
@@ -74,7 +74,7 @@
     }
     .member-card-inner {
       position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d;
-      transition: transform 0.6s ease;
+      transition: transform 0.6s ease; border-radius: inherit;
     }
     .member-card:hover .member-card-inner, .member-card:focus-visible .member-card-inner {
       transform: rotateY(180deg);
@@ -82,14 +82,15 @@
     .member-face {
       position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 0.55rem; text-align: center; backface-visibility: hidden;
-      padding: 0.25rem 0.2rem;
+      padding: 0.25rem 0.2rem; box-sizing: border-box; border-radius: inherit;
     }
     .member-face-front { transform: rotateY(0deg); }
     .member-face-back {
       transform: rotateY(180deg);
       justify-content: center;
       background: linear-gradient(135deg, rgba(24, 24, 24, 0.97), rgba(14, 14, 14, 0.98));
-      border-radius: var(--radius);
+      border-radius: inherit;
+      inset: -1px;
     }
     .member-avatar {
       width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #1f2e00; border: 1px solid var(--accent);
@@ -203,7 +204,7 @@
         <a class="member-card" href="https://github.com/RaphaelInducil" target="_self" rel="noopener noreferrer" aria-label="Visit Raphael Inducil's profile">
           <span class="member-card-inner">
             <span class="member-face member-face-front">
-              <img class="member-avatar" src="{{ url_for('static', filename='images/raphael.jpg') }}" alt="Raphael Inducil" />
+              <img class="member-avatar" src="{{ url_for('static', filename='images/raphael.svg') }}" alt="Raphael Inducil" />
               <span class="member-name">Raphael Inducil</span>
               <span class="member-role">Member</span>
             </span>
@@ -218,7 +219,7 @@
         <a class="member-card" href="https://github.com/lionheart64" target="_self" rel="noopener noreferrer" aria-label="Visit Angelo Biticon's profile">
           <span class="member-card-inner">
             <span class="member-face member-face-front">
-              <img class="member-avatar" src="{{ url_for('static', filename='images/angelo.jpg') }}" alt="Angelo Biticon" />
+              <img class="member-avatar" src="{{ url_for('static', filename='images/angelo.svg') }}" alt="Angelo Biticon" />
               <span class="member-name">Angelo Biticon</span>
               <span class="member-role">Member</span>
             </span>
@@ -233,7 +234,7 @@
         <a class="member-card" href="https://github.com/Nunyie" target="_self" rel="noopener noreferrer" aria-label="Visit Roswell Buñag's profile">
           <span class="member-card-inner">
             <span class="member-face member-face-front">
-              <img class="member-avatar" src="{{ url_for('static', filename='images/roswell.jpg') }}" alt="Roswell Buñag" />
+              <img class="member-avatar" src="{{ url_for('static', filename='images/roswell.svg') }}" alt="Roswell Buñag" />
               <span class="member-name">Roswell Buñag</span>
               <span class="member-role">Member</span>
             </span>
@@ -248,7 +249,7 @@
         <a class="member-card" href="https://github.com/kenttyyy" target="_self" rel="noopener noreferrer" aria-label="Visit Kent Rins's profile">
           <span class="member-card-inner">
             <span class="member-face member-face-front">
-              <img class="member-avatar" src="{{ url_for('static', filename='images/kent.jpg') }}" alt="Kent Rins" />
+              <img class="member-avatar" src="{{ url_for('static', filename='images/kent.svg') }}" alt="Kent Rins" />
               <span class="member-name">Kent Rins</span>
               <span class="member-role">Member</span>
             </span>
